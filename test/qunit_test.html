@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+    <meta charset="utf-8">
+    <title>Gallery Tests</title>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="https://code.jquery.com/qunit/qunit-2.0.1.js"></script>
+    <link rel="stylesheet" href="./../src/css/main.css">
 </head>
 <body>
-$END$
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script type="text/javascript" src="./../src/js/main.js"></script>
+    <script>
+        QUnit.test("true", function(assert) {
+            assert.equal(true, 1);
+        });
+    </script>
 </body>
 </html>
