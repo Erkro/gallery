@@ -101,6 +101,14 @@ html, .gallery {
     display: none;
 }
 
+.hide {
+    display: none;
+}
+
+.show {
+    display: block!important;
+}
+
 .gallery .info {
     text-align: center;
     font-size: 1.4em;
