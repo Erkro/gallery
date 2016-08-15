@@ -3,18 +3,115 @@
 <head>
     <meta charset="utf-8">
     <title>Gallery Tests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
     <script src="https://code.jquery.com/qunit/qunit-2.0.1.js"></script>
     <link rel="stylesheet" href="./../src/css/main.css">
 </head>
 <body>
-    <div id="qunit"></div>
-    <div id="qunit-fixture"></div>
+<div class="gallery" data-module-type="gallery">
+    <div data-module-section="content">
+        <div class="wrapper">
+            <div class="images">
+                <div class="navigation">
+                    <div class="prev">
+                        <span>&lt;</span>
+                    </div>
+                    <div class="next">
+                        <span>&gt;</span>
+                    </div>
+                </div>
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?1">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?2">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?3">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?4">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?5">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?6">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?7">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?8">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?9">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?10">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?11">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?12">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?13">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?14">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?15">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?16">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?17">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?18">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?19">
+                <img src="http://lorempixel.com/600/350/?1,http://lorempixel.com/600/350/?20">
+            </div>
+        </div>
+    </div>
+    <div class="info" data-module-section="info">
+        <span>Bild 1/1</span>
+    </div>
+</div>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
     <script type="text/javascript" src="./../src/js/main.js"></script>
     <script>
-        QUnit.test("true", function(assert) {
-            assert.equal(true, 1);
+        function resetGallery() {
+            var nextButton = $('div.next'),
+                imageList = $('.gallery .wrapper .images img');
+            while(true) {
+                if($(imageList[0]).hasClass('show')) {
+                    return;
+                } else {
+                    nextButton.trigger('click');
+                }
+            }
+        }
+
+        QUnit.test("gallery is initialized and first image is visible", function(assert) {
+            assert.ok($('.gallery .wrapper .images img').hasClass('show'));
         });
+
+        QUnit.test("image counter also shows 1/20 at the bottom", function(assert) {
+            assert.ok(function() {
+                var itemCounterText = $('.info span').text;
+                return (itemCounterText.test('1\/20/g'));
+            })
+        });
+
+        QUnit.test('whem clicking next button second image will be visible and item counter will be updated', function(assert) {
+            $('div.next').trigger( "click" );
+            var imageList = $('.gallery .wrapper .images img'),
+                secondImage = $(imageList[1]);
+            assert.ok(secondImage.hasClass('show'));
+            assert.ok(function() {
+                var itemCounterText = $('.info span').text;
+                return (itemCounterText.test('2 \/20/g'));
+            })
+        });
+
+        QUnit.test('going back 1 image when first image is visible will display the last image 20/20', function(assert) {
+            resetGallery();
+            $('div.prev').trigger( "click" );
+            var imageList = $('.gallery .wrapper .images img'),
+                lastImage = $(imageList[19]);
+            assert.ok(lastImage.hasClass('show'));
+            assert.ok(function() {
+                var itemCounterText = $('.info span').text;
+                return (itemCounterText.test('20\/20/g'));
+            })
+        });
+
+        QUnit.test('when image 20/20 is shown and we forward one image the image shown will be 1/20', function(assert) {
+            resetGallery();
+            $('div.prev').trigger( "click" );
+            $('div.next').trigger( "click" );
+            var imageList = $('.gallery .wrapper .images img'),
+                lastImage = $(imageList[0]);
+            assert.ok(lastImage.hasClass('show'));
+            assert.ok(function() {
+                var itemCounterText = $('.info span').text;
+                return (itemCounterText.test('1\/20/g'));
+            })
+        });
+
     </script>
 </body>
 </html>
+

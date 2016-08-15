@@ -2,6 +2,15 @@ html, .gallery {
     width: 100%;
 }
 
+.gallery {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
     .gallery .wrapper {
         margin: 2em auto 2em auto;
@@ -69,8 +78,6 @@ html, .gallery {
         padding-left: 0.3em;
     }
 }
-
-
 
 .gallery .images {
     width: 100%;

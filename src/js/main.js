@@ -55,7 +55,52 @@ var
 
                 imageList[0].className += 'show';
                 infoSection[0].innerHTML = '<span>' + (galleryList[i].currentImage+1) + '/' + imageList.length + '</span>';
+
+                this.eventHandler(galleryList[i]);
             }
+        },
+        showNextImage : function (gallery, next) {
+            var
+                newCurrentImage,
+                imageList     = gallery.find('div[data-module-section="content"] img'),
+                infoSection   = gallery.find('.info');
+
+            if(gallery.currentImage+next < 0) {
+                newCurrentImage = imageList.length-1;
+            } else if(gallery.currentImage+next > imageList.length-1) {
+                newCurrentImage = 0
+            } else {
+                newCurrentImage = gallery.currentImage+next;
+            }
+
+            imageList[gallery.currentImage].className = imageList[gallery.currentImage].className.replace(/show/g, '');
+            imageList[newCurrentImage].className += " show";
+            infoSection[0].innerHTML = '<span>' + (newCurrentImage+1) + '/' + imageList.length + '</span>';
+            gallery.currentImage = newCurrentImage;
+        },
+        eventHandler : function(gallery) {
+            this.clickHandler(gallery);
+        },
+        clickHandler : function(gallery) {
+            var
+                prevButton   = gallery.find('.prev'),
+                nextButton   = gallery.find('.next');
+
+            if(!prevButton || !nextButton) {
+                return;
+            }
+
+            prevButton[0].addEventListener("click", function(event){
+                event.stopPropagation();
+                event.preventDefault();
+                g.showNextImage(gallery, -1);
+            }, false);
+
+            nextButton[0].addEventListener("click", function(event){
+                event.stopPropagation();
+                event.preventDefault();
+                g.showNextImage(gallery, 1);
+            }, false);
         }
     };
 
