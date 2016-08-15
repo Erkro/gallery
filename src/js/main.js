@@ -80,6 +80,7 @@ var
         },
         eventHandler : function(gallery) {
             this.clickHandler(gallery);
+            this.touchHandler(gallery);
         },
         clickHandler : function(gallery) {
             var
@@ -101,6 +102,42 @@ var
                 event.preventDefault();
                 g.showNextImage(gallery, 1);
             }, false);
+        },
+        touchHandler : function(gallery) {
+            var
+                posX = null,
+                posY = null,
+                wrapper = gallery.find('div.wrapper');
+
+            function handleTouchStart(event) {
+                posX = event.touches[0].clientX;
+                posY = event.touches[0].clientY;
+            }
+
+            function handleTouchMove(event) {
+                if (!posX || !posY) {
+                    return;
+                }
+
+                var
+                    xEnd   = event.touches[0].clientX,
+                    yEnd   = event.touches[0].clientY,
+                    deltaX = posX - xEnd,
+                    deltaY = posY - yEnd;
+
+                if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                    if (deltaX > 0) {
+                        g.showNextImage(gallery, -1)
+                    } else {
+                        g.showNextImage(gallery, 1)
+                    }
+                }
+
+                posX = null;
+                posY = null;
+            }
+            wrapper[0].addEventListener('touchstart', handleTouchStart, false);
+            wrapper[0].addEventListener('touchmove', handleTouchMove, false);
         }
     };
 
